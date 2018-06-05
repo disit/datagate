@@ -1,0 +1,1 @@
+http://servicemap.disit.org/WebAppGrafo/sparql?query=%20select%20distinct%20substr(str(?m),37)%20as%20?macroClass%20substr(str(?c),37)%20as%20?subClass%20{%20?m%20rdfs:subClassOf%20km4c:Service.%20?c%20rdfs:subClassOf+%20?m.%20}%20order%20by%20?m%20?c&format=json

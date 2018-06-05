@@ -1,0 +1,273 @@
+/* Authors: Tommaso Galati (tommasogalati01@gmail.com) - Giovanni Cavallaro (cavaterza89@gmail.com) */
+
+.resource-view .account-masthead {
+    background-color: rgb(0, 0, 0);
+}
+
+.resource-view #selectContainer {
+    display:inline-block;
+    margin: 40px;
+    height: 100px;
+}
+
+.resource-view #selectContainer .form-group{
+    margin:20px;
+    width:300px;
+    float: left;
+}
+
+.resource-view .page{
+    display:none;
+}
+
+.resource-view .page.active{
+    display:block;
+}
+
+.resource-view .dropmenu{
+    display:none;
+    position: absolute;
+    height: auto;
+    max-height:250px;
+    overflow: auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    width: 200px;
+    padding: 4px 8px;
+    text-align:left;
+    margin-left:8px;
+
+}
+
+.resource-view .dropmenu.show {
+    display:block;
+}
+
+.resource-view .dropmenu div:hover {
+    background:#ccc;
+}
+
+.resource-view #catError{
+    display:none;
+    color:red;
+    font-weight:500;
+}
+
+.resource-view #catError.active{
+    display:block;
+}
+
+.resource-view .resource-view .bs-searchbox .form-control{
+    width:94% !important;
+}
+
+.resource-view .listcontainer {
+    display:block;
+    position:relative;
+    overflow-x:auto;
+    overflow-y:visible;
+    min-height:400px;
+}
+
+.resource-view .listcontainer .table{
+    width: 7584px;
+    max-width: 7584px;
+    /*width:-moz-max-content;*/
+}
+
+.resource-view .table .num-row{
+    width: 40px;
+}
+.resource-view .table td.num-row{
+    text-align:center;
+    line-height:30px;
+}
+
+.resource-view .table td.valid-1{
+    background-color: #dff0d8;
+}
+.resource-view .table td.valid-2{
+    background-color: #f7a891;
+}
+.resource-view .table th, .resource-view .table td{
+    padding:4px;
+}
+
+
+.resource-view #inputModalField.valid-0{
+    border-color: #cccccc !important;
+}
+
+.resource-view #inputModalField.valid-1{
+    border-color: #97ad8e !important;
+}
+
+.resource-view #inputModalField.valid-2{
+    border-color: #f2dede !important;
+}
+
+.resource-view .modal-header .close{
+    margin-top:-35px !important;
+}
+
+.resource-view .table th, .resource-view .table td {
+    text-align:center !important;
+    line-height:29px;
+    float:left;
+    width:234px;
+}
+
+.resource-view .table input{
+    margin:0 !important;
+}
+
+.resource-view input[type='text'],
+.resource-view input[type='number'],
+.resource-view input[type='password'],
+.resource-view textarea {
+    outline: none;
+    box-shadow:none !important;
+    border:1px solid #ccc !important;
+}
+
+.resource-view input[type=radio], .resource-view input[type=checkbox]{
+    top: 0px;
+}
+
+.resource-view th.select-row-del, .resource-view td.select-row-del{
+    width:60px !important;
+}
+
+.resource-view .titlecolumn{
+    display:inline-block;
+    width:200px;
+    position:relative;
+    border:1px solid #000;
+    text-align:center;
+    padding:3px 0;
+    margin:5px 0;
+}
+
+.resource-view .select-row-del {
+    display: none;
+}
+
+.resource-view .select-row-del.show{
+    display:inline-block;
+}
+
+.resource-view .btn-delete {
+    display: none;
+    margin-bottom: 10px;
+    position: relative;
+    height: 60px;
+    margin-top: 40px;
+}
+
+.resource-view .btn-delete.show{
+    display:block;
+}
+
+.resource-view .btn-group {
+    margin-top: 20px;
+}
+
+.resource-view #btnsavecontainer{
+    height:80px;
+}
+
+.resource-view #btnsavecontainer button{
+    margin:30px;
+    float:right;
+}
+
+.resource-view .trash-confirm {
+    display: none;
+    width: 150px;
+    border: 1px solid #bbbbbb;
+    border-radius: 3px;
+    background-color: rgba(238, 238, 238, 0.24);
+    margin-top: 0;
+    position: absolute;
+    left: 100px;
+    top: -22px;
+    text-align: center;
+}
+
+.resource-view .trash-confirm.show{
+    display:block;
+}
+
+.resource-view .trash-confirm p {
+    text-align: center;
+    margin-top: 3px;
+    border-bottom: 1px solid #dddddd;
+    font-weight:600;
+}
+
+.resource-view .trash-confirm button {
+    margin: 0 18px 10px 18px;
+    padding: 2px 6px;
+    width: 33px;
+}
+
+.resource-view #inputModalField {
+    border: 3px solid #cccccc !important;
+}
+
+.resource-view #button_pagination {
+    display: block;
+	margin: 30px auto;
+    max-width: 90%;
+    padding: 0 15px 25px 10px;
+    text-align: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.resource-view .chpage {
+    height: 30px;
+}
+
+.resource-view .page_status {
+    width: 5px;
+    height: 5px;
+    position: relative;
+    bottom: -10px;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+.resource-view .arrow_box:after, .resource-view .arrow_box:before {
+	right: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.resource-view .arrow_box:after {
+	border-color: rgba(245, 245, 245, 0);
+	border-right-color: #f5f5f5;
+	border-width: 10px;
+	margin-top: -10px;
+}
+.resource-view .arrow_box:before {
+	border-color: rgba(187, 187, 187, 0);
+	border-right-color: #bbbbbb;
+	border-width: 11px;
+	margin-top: -11px;
+}
+
+.resource-view #errorboxformat{
+    height: auto;
+    min-height: 250px;
+    margin: 50px auto;
+}
+
+.resource-view #buttonerrorformat{
+    float: right;
+}

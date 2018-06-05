@@ -1,0 +1,3 @@
+innerdirectory;/usr/share/nginx/html/data-csv/
+outerdirectory;http://datagate.disit.org/data-csv/
+posturl;http://datagate.disit.org/ingestion-process/update.php

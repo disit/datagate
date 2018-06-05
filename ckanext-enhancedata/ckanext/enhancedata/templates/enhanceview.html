@@ -1,0 +1,354 @@
+<!-- Authors: Tommaso Galati (tommasogalati01@gmail.com) - Giovanni Cavallaro (cavaterza89@gmail.com) -->
+
+{% resource 'enhancedata/enhancefunctions.js' %}
+{% resource 'enhancedata/bootstrap-select.js' %}
+{% resource 'enhancedata/pagemanager.js' %}
+
+{% if is_valid == 'true' %}
+
+    <div id="hidden_ckan_url" style="display: none">{{ urlckan }}</div>
+    <div id="hidden_key" style="display: none">{{ user_key }}</div>
+    <div id="hidden_id" style="display: none">{{ resource_id }}</div>
+    <div id="hidden_number" style="display: none">{{ records_id }}</div>
+    <div id="hidden_current_categ" style="display: none">{{ actual_categ }}</div>
+    <div id="hidden_current_subcateg" style="display: none">{{ actual_subcateg }}</div>
+    <div id="hidden_page_number" style="display: none">{{ num_pages }}</div>
+    <div id="hidden_package_id" style="display: none">{{ package_id }}</div>
+
+    <div id="provincelist" style="display: none">
+        <div class="dropmenuprovince listcont">
+            {% for pro in province_list %}
+                <div data-value="{{ pro }}" onclick="selectDropItem(this, 'contlistprovince', 'province')">{{ pro }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="citylist" style="display: none">
+        <div class="dropmenucity listcont">
+            {% for ci in city_list %}
+                <div data-value="{{ ci }}" onclick="selectDropItem(this, 'contlistcity', 'city' )">{{ ci }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="postalcodelist" style="display: none">
+        <div class="dropmenupostalcode listcont">
+        {% for pc in postalcode_list %}
+             <div data-value="{{ pc }}" onclick="selectDropItem(this, 'contlistpostalcode', 'postalcode')">{{ pc }}</div>
+        {% endfor %}
+        </div>
+    </div>
+
+    <div class="alert alert-warning alert-dismissable">
+        <strong>Info</strong> Caricamento dati della Risorsa, si consiglia di attendere la fine del caricamento.
+        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+    </div>
+
+    <div class="alert alert-info alert-dismissable">
+        <strong>Nota</strong> La selezione di <em>Categoria</em> e <em>Sottocategoria</em> è obbligatoria.
+        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+    </div>
+
+    <div class="alert alert-info alert-dismissable">
+        <strong>Nota</strong> I campi * sono obbligatori. Gli errori sono segnalati in rosso; assicurati di correggerli prima della <em>Pubblicazione</em>.
+        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+    </div>
+
+
+    <div id="selectContainer">
+        <div id="categoryCont" class="form-group">
+          <label for="category">Seleziona Categoria</label>
+          <select id="category" class="form-control selectpicker" title="Nessuna categoria selezionata" data-live-search="true">
+                <option value="empty"></option>
+                {% for class in class_original %}
+                    {% set numloop = loop %}
+                    <option value="{{ class }}">{{ class_modified[numloop.index-1] }}</option>
+                {% endfor %}
+          </select>
+        </div>
+
+        <div id="categoryEngCont" class="form-group">
+          <label for="categoryEng">Seleziona sottocategoria</label>
+          <select id="categoryEng" class="form-control selectpicker" title="Nessuna sottocategoria selezionata"  data-live-search="true">
+                <option value="empty"></option>
+                {% for cat in cateng_original %}
+                    {% set numloop = loop %}
+                    <option value="{{ cat }}">{{ cateng_modified[numloop.index-1] }}</option>
+                {% endfor %}
+          </select>
+        </div>
+        <div id="catError" class="danger">servizio attualmente non disponibile</div>
+    </div>
+
+    <div id="page_container">
+        <div id="page-1" class="page active">
+            <div class="listcontainer">
+                <table class="table table-bordered tabled" id="tabledata-1">
+                    <thead>
+                        <tr>
+                            <th class="num-row">Id</th>
+                            <th class="select-row-del">Scegli</th>
+                            <th data-toggle="tooltip" title="categoria granulare">otherCategoryITA</th>
+                            <th data-toggle="tooltip" title="categoria in inglese granulare">otherCategoryENG</th>
+                            <th data-toggle="tooltip" title="nome (obbligatorio)">nameITA *</th>
+                            <th data-toggle="tooltip" title="nome in inglese">nameENG</th>
+                            <th data-toggle="tooltip" title="abbreviazione del nome">abbreviationITA</th>
+                            <th data-toggle="tooltip" title="abbreviazione del nome in inglese">abbreviationENG</th>
+                            <th data-toggle="tooltip" title="breve descrizione">descriptionShortITA</th>
+                            <th data-toggle="tooltip" title="descrizione in inglese">descriptionShortENG</th>
+                            <th data-toggle="tooltip" title="descrizione dettagliata">descriptionLongITA</th>
+                            <th data-toggle="tooltip" title="descrizione dettagliata in inglese">descriptionLongENG</th>
+                            <th data-toggle="tooltip" title="numero di telefono">phone</th>
+                            <th data-toggle="tooltip" title="numero di fax">fax</th>
+                            <th data-toggle="tooltip" title="indirizzo web">url</th>
+                            <th data-toggle="tooltip" title="indirizzo posta elettronica">email</th>
+                            <th data-toggle="tooltip" title="persona di riferimento">RefPerson</th>
+                            <th data-toggle="tooltip" title="provincia (obbligatoria)">province *</th>
+                            <th data-toggle="tooltip" title="città (obbligatoria)">city *</th>
+                            <th data-toggle="tooltip" title="CAP">postalcode</th>
+                            <th data-toggle="tooltip" title="indirizzo">streetAddress</th>
+                            <th data-toggle="tooltip" title="numero civico">civicNumber</th>
+                            <th data-toggle="tooltip" title="numero di telefono secondario">secondPhone</th>
+                            <th data-toggle="tooltip" title="numero di fax secondario">secondFax</th>
+                            <th data-toggle="tooltip" title="email secondaria">secondEmail</th>
+                            <th data-toggle="tooltip" title="indirizzo secondario">secondStreetAddress</th>
+                            <th data-toggle="tooltip" title="numero civico secondario">secondCivicNumber</th>
+                            <th data-toggle="tooltip" title="note aggiuntive">notes</th>
+                            <th data-toggle="tooltip" title="orario">timetable</th>
+                            <th data-toggle="tooltip" title="url di foto">photo</th>
+                            <th data-toggle="tooltip" title="latitudine (obbligatoria)">latitude *</th>
+                            <th data-toggle="tooltip" title="longitudine (obbligatoria)">longitude *</th>
+                            <th data-toggle="tooltip" title="toponimo">streetId</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for rec in records %}
+                        {% set rowloop = loop %}
+                    <tr data-row="{{ rowloop.index }}">
+                        <td class="valid-0 num-row">{{ rowloop.index }}</td>
+                        <td class="valid-0 select-row-del"><input type="checkbox" value="" data-row="{{ rowloop.index }}"></td>
+                        <td class="valid-{{ rec['otherCategoryITA']['valid'] }}"><input id="othercategoryita-{{ rowloop.index }}" type="text" class="form-control" value="{{ rec['otherCategoryITA']['value'] }}"></td>
+                        <td class="valid-{{ rec['otherCategoryENG']['valid'] }}"><input id="othercategoryeng-{{ rowloop.index }}" type="text" class="form-control" value="{{ rec['otherCategoryENG']['value'] }}"></td>
+                        <td class="valid-{{ rec['nameITA']['valid'] }}"><input id="nameita-{{ rowloop.index }}" type="text" class="nameita form-control" value="{{ rec['nameITA']['value'] }}"></td>
+                        <td class="valid-{{ rec['nameENG']['valid'] }}"><input id="nameeng-{{ rowloop.index }}" type="text" class="nameeng form-control" value="{{ rec['nameENG']['value'] }}"></td>
+                        <td class="valid-{{ rec['abbreviationITA']['valid'] }}"><input id="abbrevita-{{ rowloop.index }}" type="text" class="abbrevita form-control" value="{{ rec['abbreviationITA']['value'] }}"></td>
+                        <td class="valid-{{ rec['abbreviationENG']['valid'] }}"><input id="abbreveng-{{ rowloop.index }}" type="text" class="abbreveng form-control" value="{{ rec['abbreviationENG']['value'] }}"></td>
+                        <td class="valid-{{ rec['descriptionShortITA']['valid'] }}"><input id="descriptionshortita-{{ rowloop.index }}" type="text" class="form-control" value="{{ rec['descriptionShortITA']['value'] }}"></td>
+                        <td class="valid-{{ rec['descriptionShortENG']['valid'] }}"><input id="descriptionshorteng-{{ rowloop.index }}" type="text" class="form-control" value="{{ rec['descriptionShortENG']['value'] }}"></td>
+                        <td class="valid-{{ rec['descriptionLongITA']['valid'] }}"><input id="descriptionlongita-{{ rowloop.index }}" type="text" class="form-control" value="{{ rec['descriptionLongITA']['value'] }}"></td>
+                        <td class="valid-{{ rec['descriptionLongENG']['valid'] }}"><input id="descriptionlongeng-{{ rowloop.index }}" type="text" class="form-control" value="{{ rec['descriptionLongENG']['value'] }}"></td>
+                        <td class="valid-{{ rec['phone']['valid'] }}"><input id="phone-{{ rowloop.index }}" type="text" class="phone form-control" value="{{ rec['phone']['value'] }}"></td>
+                        <td class="valid-{{ rec['fax']['valid'] }}"><input id="fax-{{ rowloop.index }}" type="text" class="fax form-control" value="{{ rec['fax']['value'] }}"></td>
+                        <td class="valid-{{ rec['url']['valid'] }}"><input id="url-{{ rowloop.index }}" type="text" class="url form-control" value="{{ rec['url']['value'] }}"></td>
+                        <td class="valid-{{ rec['email']['valid'] }}"><input id="email-{{ rowloop.index }}" type="text" class="email form-control" value="{{ rec['email']['value'] }}"></td>
+                        <td class="valid-{{ rec['RefPerson']['valid'] }}"><input id="refperson-{{ rowloop.index }}" type="text" class="form-control" value="{{ rec['RefPerson']['value'] }}"></td>
+
+                        <td class="valid-{{ rec['province']['valid'] }}">
+                            <div class="contlistprovince" id="contprovince-{{ rowloop.index }}">
+                                <input id="province-{{ rowloop.index }}" type="text" class="province form-control" value="{{ rec['province']['value'] }}">
+                            </div>
+                        </td>
+
+                        <td class="valid-{{ rec['city']['valid'] }}">
+                            <div class="contlistcity" id="contcity-{{ rowloop.index }}">
+                                <input id="city-{{ rowloop.index }}" type="text" class="city form-control" value="{{ rec['city']['value'] }}">
+                            </div>
+                        </td>
+
+                        <td class="valid-{{ rec['postalcode']['valid'] }}">
+                            <div class="contlistpostalcode" id="contpostalcode-{{ rowloop.index }}">
+                                <input id="postalcode-{{ rowloop.index }}" type="text" class="postalcode form-control" value="{{ rec['postalcode']['value'] }}">
+                            </div>
+                        </td>
+
+                        <td class="valid-{{ rec['streetAddress']['valid'] }}"><input id="streetaddress-{{ rowloop.index }}" type="text" class="form-control" value="{{ rec['streetAddress']['value'] }}"></td>
+                        <td class="valid-{{ rec['civicNumber']['valid'] }}"><input id="civicnumber-{{ rowloop.index }}" type="text" class="form-control" value="{{ rec['civicNumber']['value'] }}"></td>
+                        <td class="valid-{{ rec['secondPhone']['valid'] }}"><input id="secondphone-{{ rowloop.index }}" type="text" class="secondphone form-control" value="{{ rec['secondPhone']['value'] }}"></td>
+                        <td class="valid-{{ rec['secondFax']['valid'] }}"><input id="secondfax-{{ rowloop.index }}" type="text" class="secondfax form-control" value="{{ rec['secondFax']['value'] }}"></td>
+                        <td class="valid-{{ rec['secondEmail']['valid'] }}"><input id="secondemail-{{ rowloop.index }}" type="text" class="secondemail form-control" value="{{ rec['secondEmail']['value'] }}"></td>
+                        <td class="valid-{{ rec['secondStreetAddress']['valid'] }}"><input id="secondstreetaddress-{{ rowloop.index }}" type="text" class="form-control" value="{{ rec['secondStreetAddress']['value'] }}"></td>
+                        <td class="valid-{{ rec['secondCivicNumber']['valid'] }}"><input id="secondcivicnumber-{{ rowloop.index }}" type="text" class="form-control" value="{{ rec['secondCivicNumber']['value'] }}"></td>
+                        <td class="valid-{{ rec['notes']['valid'] }}"><input id="notes-{{ rowloop.index }}" type="text" class="form-control" value="{{ rec['notes']['value'] }}"></td>
+                        <td class="valid-{{ rec['timetable']['valid'] }}"><input id="timetable-{{ rowloop.index }}" type="text" class="form-control " value="{{ rec['timetable']['value'] }}"></td>
+                        <td class="valid-{{ rec['photo']['valid'] }}"><input id="photo-{{ rowloop.index }}" type="text" class="photo form-control" value="{{ rec['photo']['value'] }}"></td>
+                        <td class="valid-{{ rec['latitude']['valid'] }}"><input id="lat-{{ rowloop.index }}" type="text" class="latitude form-control" value="{{ rec['latitude']['value'] }}"></td>
+                        <td class="valid-{{ rec['longitude']['valid'] }}"><input id="lon-{{ rowloop.index }}" type="text" class="longitude form-control" value="{{ rec['longitude']['value'] }}"></td>
+                        <td class="valid-{{ rec['streetId']['valid'] }}"><input id="streetId-{{ rowloop.index }}" type="text" class="streetId form-control" value="{{ rec['streetId']['value'] }}"></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div id="btn-delete-1" class="btn-delete">
+                    <button id="trash-1" class="trash" data-toggle="tooltip" data-placement="top"
+                            title="Elimina le righe selezionate" onclick="do_delete()">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i> Elimina</button>
+                    <div id="trash-confirm-1" class="trash-confirm arrow_box">
+                        <p>Sei sicuro?</p>
+                        <button class="btn btn-secondary" onclick="confirm_delete(1)">Sì</button>
+                        <button class="btn btn-secondary" onclick="confirm_delete(0)">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" id="addrow"
+                    data-toggle="tooltip" data-placement="bottom" title="Aggiungi una riga">
+                    <i class="fa fa-plus" aria-hidden="true"></i></button>
+            <button type="button" class="btn btn-default" id="deleterow"
+                    data-toggle="tooltip" data-placement="bottom" title="Elimina righe">
+                    <i class="fa fa-minus" aria-hidden="true"></i></button>
+        </div>
+        <div class="btn-group btn-group-sm" role="group" id="button_pagination" data-toggle="tooltip" title="In verde le pagine senza errori, in rosso le pagine con errori">
+            {% for i in range(num_pages) %}
+                {% if i+1 == 1 %}
+                    <button type="button" class="chpage btn btn-secondary active">1<div class="page_status"></div></button>
+                {% else %}
+                    <button type="button" class="chpage btn btn-secondary disabled" disabled>{{ i+1 }}<div class="page_status"></div></button>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+
+    {% if user_key != '' %}
+        <div id="btnsavecontainer">
+            <button class="btn btn-success disabled" id="validatebutton"
+                    data-toggle="tooltip" data-placement="top" title="Valida definitivamente la risorsa" disabled>Pubblica</button>
+            <button class="btn btn-primary disabled" id="savebutton"
+                    data-toggle="tooltip" data-placement="top" title="Salva lo stato corrente della risorsa" disabled>Salva Stato</button>
+            <button class="btn btn-primary disabled" id="exportcsv"
+                    data-toggle="tooltip" data-placement="top" title="Esporta la risorsa in formato csv" disabled>Downlaod CSV</button>
+        </div>
+    {% endif %}
+
+    <div class="modal fade" id="alert-row" role="dialog" style="width: 300px">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Attenzione!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Nessuna riga selezionata</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="alert-update" role="dialog" style="width: 300px">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Avviso</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Stiamo salvando i dati correnti...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="cant-validate" role="dialog" style="width: 500px">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Attenzione!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Controlla bene di aver validato correttamente tutti i dati</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="server-error" role="dialog" style="width: 500px">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Attenzione!</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="inputModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <textarea class="form-control" id="inputModalField" style="width:500px"></textarea>
+                            <div style="display: none" id="callFrom"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div id="errorboxformat">
+        <div class="alert alert-danger">
+            <strong>ATTENZIONE</strong> Il formato del file caricato non è valido.
+            <br><br>
+            {% if wrong_field|length > 0 %}
+                Sono presenti errori nel nome dei seguenti campi:
+                <ul>
+                    {% for field in wrong_field %}
+                        <li>{{ field }}</li>
+                    {% endfor %}
+                </ul>
+                <br><br>
+            {% endif %}
+            {% if missing_field|length > 0 %}
+                Non sono presenti i seguenti campi:
+                <ul>
+                    {% for field in missing_field %}
+                        <li>{{ field }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if wrong_type|length > 0 %}
+                Sono presenti errori nel formato dei seguenti campi:
+                <ul>
+                    {% for key, value in wrong_type.iteritems() %}
+                        <li>{{ key }}: {{ value }}</li>
+                    {% endfor %}
+                </ul>
+                <br>
+                Si consiglia di eliminare questa Risorsa e crearne una nuova con il formato corretto.
+                <br><br>
+            {% endif %}
+            <br>
+            É possibile scaricare un template corretto cliccando su "Download".
+        </div>
+        <div id="buttonerrorformat">
+            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Scarica il modello template cliccando qui">Download</button>
+        </div>
+    </div>
+{% endif %}

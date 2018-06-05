@@ -1,0 +1,30 @@
+
+#content{
+    width:75%;
+}
+
+.span9{
+    width:83.3%;
+    border-left: solid 1px #ccc;
+}
+
+.media-item{
+    width:15%;
+}
+
+div.wrapper.row{
+    background-image:none;
+}
+
+aside.secondary{
+    border-right: solid 1px #ccc;
+}
+
+aside.span3{
+    width: 16%;
+    min-height: 50%;
+}
+
+ul.media-grid{
+    margin: 0 -10px;
+}
